@@ -1,7 +1,7 @@
 from flask import render_template,request,redirect,url_for,abort
 from ..models import  User, Pitch,Comment
 from . import main
-from .forms import UpdateProfile,CommentForm,AddPitchForm
+from .forms import UpdateProfile,AddPitchForm,CommentForm
 from ..import db,photos
 from flask_login import login_required
 # Views
@@ -21,7 +21,7 @@ def index():
     return render_template('index.html', title = title,pitches=search_pitches )
 
 
-@main.route('pitch/new', methods = ['GET','POST'])
+@main.route('/pitch/new', methods = ['GET','POST'])
 @login_required
 def add_pitch():
     form = AddPitchForm()
@@ -30,12 +30,12 @@ def add_pitch():
        category = form.category.data
        pitch = form.content.data
        new_pitch=Pitch(content=pitch,category=category, user=curent_user)
-       new_pitch.save_pitch
+       new_pitch.save_pitch()
 
        return redirect(url_for('main.index'))
-    search_pitches = Pitch.get_pitches()
-    title = 'cause'
-    return render_template('pitches.html' , title = title,pitch_form=form , pitches=search_pitches )
+    search_pitches = Pitch.query.all()
+    title = 'Please add your pitch'
+    return render_template('pitches.html' , title = title,pitch_form=form )
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 @main.route('/user/<uname>')
 def profile(uname):
@@ -74,3 +74,24 @@ def update_pic(uname):
         user.profile_pic_path = path
         db.session.commit()
     return redirect(url_for('main.profile',uname=uname))
+@main.route('/new/comment/<int:id>' , methods = ['GET', 'POST'])
+@login_required
+def add_comment(id):
+    pitch=Pitch.query.filter_by(id=id).first()
+    if pitch is None:
+        abort(404)
+    form=CommentForm()
+    if form.validate_on_submit():
+        comment=form.comment.data 
+        new_comment=Comment(content=comment , pitch=pitch, user=current_user)
+        db.session.add(new_comment)
+        db.session.commit()
+
+        return redirect(url_for('main.index'))
+    return render_template(comment.html,comment_form=form) 
+@main.route('/pitch/<int:id>')
+def single_pitch(id):
+    pitch=Pitch.query.filter_by(id=id).first()
+    comments=Comment.get_comment(id=id)
+    return render_template('pitch.html',pitch=pitch,comments=comments)
+

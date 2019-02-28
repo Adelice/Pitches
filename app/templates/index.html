@@ -16,22 +16,13 @@
           <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
         {% endblock %}
     </head>
+{% block content %}
+   <div class="container">
    
+      {{macro.displayPitches(pitches)}}<br>
+      <a href="/pitch/new" class="btn btn-primary">Add Pitch</a>
 
-
-<!-- Content block -->
-.
-    <!-- Content block -->
-   {% block content %}
-    <body>
-            <div class="container">
-                    <form>
-                        <input type="text" name="movie_query" placeholder="Search for a Movie" class="form-control">
-                        <input type="submit"  value="Submit" class="btn btn-default">
-                    </form>
-                
-                </div>
-           
-        </body>
- {% endblock%}
+    </div>  
+    
+{% endblock %}
 </html>

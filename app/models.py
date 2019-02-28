@@ -3,39 +3,6 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin
 from . import login_manager
 
-       
-
-
-
-class Review:
-
-    all_reviews = []
-
-    def __init__(self,movie_id,title,imageurl,review):
-        self.movie_id = movie_id
-        self.title = title
-        self.imageurl = imageurl
-        self.review = review
-
-
-    def save_review(self):
-        Review.all_reviews.append(self)
-
-
-    @classmethod
-    def clear_reviews(cls):
-        Review.all_reviews.clear()
-
-    @classmethod
-    def get_reviews(cls,id):
-
-        response = []
-
-        for review in cls.all_reviews:
-            if review.movie_id == id:
-                response.append(review)
-
-        return response
 class User(UserMixin,db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer,primary_key = True)
@@ -80,7 +47,7 @@ class Pitch(db.Model):
     def clear_pitches(cls):
         Pitch.search_pitches.clear()
     @classmethod
-    
+
     def get_pitche(cls,id):
         pitche = Pitch.query.filter_by(user_id=id).all()
         return pitche
