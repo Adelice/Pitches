@@ -29,11 +29,14 @@ def add_pitch():
     if form.validate_on_submit():
        category = form.category.data
        pitch = form.content.data
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-        return redirect(url_for('main.movie',movie_id = movie.id ))
+       new_pitch=Pitch(content=pitch,category=category, user=curent_user)
+       new_pitch.save_pitch
 
-    title = f'{movie.title} review'
-    return render_template('new_review.html',title = title, review_form=form, movie=movie)
+       return redirect(url_for('main.index'))
+    search_pitches = Pitch.get_pitches()
+    title = 'cause'
+    return render_template('pitches.html' , title = title,pitch_form=form , pitches=search_pitches )
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 @main.route('/user/<uname>')
 def profile(uname):
     user = User.query.filter_by(username = uname).first()

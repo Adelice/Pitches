@@ -80,6 +80,7 @@ class Pitch(db.Model):
     def clear_pitches(cls):
         Pitch.search_pitches.clear()
     @classmethod
+    
     def get_pitche(cls,id):
         pitche = Pitch.query.filter_by(user_id=id).all()
         return pitche
