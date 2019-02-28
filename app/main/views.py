@@ -1,9 +1,9 @@
 from flask import render_template,request,redirect,url_for,abort
-from ..models import  User, Pitch,Comment
+from ..models import  User, Pitch,Comment,PhotoProfile
 from . import main
 from .forms import UpdateProfile,AddPitchForm,CommentForm
 from ..import db,photos
-from flask_login import login_required
+from flask_login import login_required,current_user
 # Views
 
 @main.route('/')
@@ -21,15 +21,16 @@ def index():
     return render_template('index.html', title = title,pitches=search_pitches )
 
 
-@main.route('/pitch/new', methods = ['GET','POST'])
+@main.route('/pitch/new/', methods = ['GET','POST'])
 @login_required
 def add_pitch():
     form = AddPitchForm()
    
     if form.validate_on_submit():
        category = form.category.data
-       pitch = form.content.data
-       new_pitch=Pitch(content=pitch,category=category, user=curent_user)
+       content = form.content.data
+
+       new_pitch=Pitch(description=content,category=category, user=current_user)
        new_pitch.save_pitch()
 
        return redirect(url_for('main.index'))
@@ -88,7 +89,7 @@ def add_comment(id):
         db.session.commit()
 
         return redirect(url_for('main.index'))
-    return render_template(comment.html,comment_form=form) 
+    return render_template('comment.html',comment_form=form) 
 @main.route('/pitch/<int:id>')
 def single_pitch(id):
     pitch=Pitch.query.filter_by(id=id).first()

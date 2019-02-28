@@ -11,5 +11,5 @@ class UpdateProfile(FlaskForm):
     submit = SubmitField('Submit') 
 class AddPitchForm(FlaskForm):
     category= SelectField('Category:',choices=[('pickup-lines' , 'Pickup Lines'),('Interview-pitch' ,'Interview Pitch'),('Promotion-pitch' , 'Promotion Pitch')]) 
-    content = TextAreaField('Pitch', validators = [Required])  
+    content = TextAreaField('Pitch', validators = [Required()])  
     submit = SubmitField('SUBMIT')                                      

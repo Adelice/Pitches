@@ -1,8 +1,7 @@
-
 {% extends 'base.html'%}
 {% import 'macros.html' as macro%}
- <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+ <html>
     <head>
         <meta charset="utf-8">
         {% if title %}
@@ -16,13 +15,13 @@
           <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
         {% endblock %}
     </head>
-{% block content %}
+ {% block content %}
    <div class="container">
    
       {{macro.displayPitches(pitches)}}<br>
-      <a href="/pitch/new" class="btn btn-primary">Add Pitch</a>
+      <a href="/pitch/new/" class="btn btn-primary">Add Pitch</a>
 
     </div>  
     
-{% endblock %}
-</html>
+ {% endblock %}
+ </html>
